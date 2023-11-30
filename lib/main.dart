@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app/core/configs/env_config.dart';
+import 'package:weather_app/core/configs/injectable_config.dart';
 import 'package:weather_app/features/weather/screens/weather_screen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  configureDependencies();
   await EnvConfig.init(flavor: Flavor.dev);
   runApp(const MyApp());
 }

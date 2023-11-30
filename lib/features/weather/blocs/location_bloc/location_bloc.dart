@@ -1,12 +1,10 @@
-import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
 import 'package:stream_transform/stream_transform.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:weather_app/core/configs/env_config.dart';
-import 'package:http/http.dart' as http;
+import 'package:weather_app/core/configs/injectable_config.dart';
 import 'package:weather_app/models/city.dart';
+import 'package:weather_app/repositories/location_repository.dart';
 
 part 'location_event.dart';
 
@@ -21,16 +19,11 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     on<SearchLocationCompleteEvent>(_onSearchComplete);
   }
 
+  final LocationRepositoryInterface repo = getIt();
+
   void _onSearchLocation(SearchLocationEvent event, Emitter emitter) async {
-    Uri url = Uri.parse(
-      'http://api.openweathermap.org/geo/1.0/direct?q=${event.keyword}&limit=5&appid=${EnvConfig.weatherApiKey}',
-    );
     try {
-      final response = await http.get(url);
-      final List<Map<String, dynamic>> jsonList =
-          List<Map<String, dynamic>>.from(jsonDecode(response.body));
-      final List<CityModel> cities =
-          jsonList.map((json) => CityModel.fromJson(json)).toList();
+      final List<CityModel> cities = await repo.searchCities(event.keyword);
       emitter(LocationSearching(cities));
     } catch (error) {
       log('_onSearchLocation $error');
