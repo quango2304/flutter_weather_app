@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/features/weather/blocs/location_bloc/location_bloc.dart';
+import 'package:weather_app/features/weather/blocs/weather_cubit/weather_cubit.dart';
+import 'package:weather_app/features/weather/widgets/weather_widget.dart';
 import 'package:weather_app/models/city.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -12,6 +14,9 @@ class MyHomePage extends StatefulWidget {
       providers: [
         BlocProvider(
           create: (context) => LocationBloc(),
+        ),
+        BlocProvider(
+          create: (context) => WeatherCubit(),
         ),
       ],
       child: MyHomePage._(key: key),
@@ -24,11 +29,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final searchTextController = TextEditingController();
+
   LocationBloc get locationBloc => context.read<LocationBloc>();
+  WeatherCubit get weatherCubit => context.read<WeatherCubit>();
 
-  void onSelectLocation(CityModel city) {
-
-  }
+  void onSelectLocation(CityModel city) {}
 
   Widget buildBody() {
     return BlocBuilder<LocationBloc, LocationState>(builder: (_, state) {
@@ -53,10 +58,11 @@ class _MyHomePageState extends State<MyHomePage> {
         final city = cities[index];
         return CupertinoListTile(
           title: Text(city.name),
-          subtitle: Text(city.country),
+          subtitle: Text('${city.country} ${city.region}'),
           onTap: () {
             searchTextController.clear();
-            locationBloc.add(SearchLocationCompleteEvent());
+            weatherCubit.getWeatherForLocation(cityName: city.name);
+            locationBloc.add(const SearchLocationCompleteEvent());
           },
         );
       },
@@ -65,7 +71,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget buildWeatherData() {
-    return Text('weather data here');
+    return BlocBuilder<WeatherCubit, WeatherState>(builder: (_, state) {
+      switch (state) {
+        case WeatherInitial():
+          return Text("Please choose location");
+        case WeatherFetching():
+          return CupertinoActivityIndicator();
+        case WeatherFetchSuccessful():
+          final weather = state.weather;
+          return WeatherWidget(weather: weather,);
+        case WeatherFetchFailed():
+          return Text(state.message);
+      }
+    });
   }
 
   Widget buildSearchFailed(LocationSearchingFailed state) {
@@ -80,7 +98,11 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             TextField(
               onChanged: (keyword) {
-                locationBloc.add(SearchLocationEvent(keyword));
+                if(keyword.isEmpty) {
+                  locationBloc.add(const SearchLocationCompleteEvent());
+                } else {
+                  locationBloc.add(SearchLocationEvent(keyword));
+                }
               },
               controller: searchTextController,
             ),
