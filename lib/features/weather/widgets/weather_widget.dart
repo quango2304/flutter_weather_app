@@ -38,7 +38,7 @@ class WeatherWidget extends StatelessWidget {
             ),
             padding: EdgeInsets.all(10),
           ),
-          ForecastHorizontal(forecastDay: weather.forecast.forecastDay),
+          ForecastHorizontal(forecastDay: weather.forecasts),
           Padding(
             child: Divider(
             ),
@@ -57,7 +57,7 @@ class WeatherWidget extends StatelessWidget {
             ),
             ValueTile(
                 "sunrise",
-                weather.forecast.forecastDay[0].astro.sunrise),
+                weather.forecasts[0].astro.sunrise),
             Padding(
               padding: const EdgeInsets.only(left: 15, right: 15),
               child: Center(
@@ -69,7 +69,7 @@ class WeatherWidget extends StatelessWidget {
             ),
             ValueTile(
                 "sunset",
-                weather.forecast.forecastDay[0].astro.sunset),
+                weather.forecasts[0].astro.sunset),
             Padding(
               padding: const EdgeInsets.only(left: 15, right: 15),
               child: Center(

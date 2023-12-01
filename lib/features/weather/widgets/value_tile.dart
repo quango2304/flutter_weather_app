@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/models/weather_icon.dart';
 
 /// General utility widget used to render a cell divided into three rows
 /// First row displays [label]
@@ -7,9 +8,9 @@ import 'package:flutter/material.dart';
 class ValueTile extends StatelessWidget {
   final String label;
   final String value;
-  final String? iconUrl;
+  final String? weatherName;
 
-  ValueTile(this.label, this.value, {this.iconUrl});
+  ValueTile(this.label, this.value, {this.weatherName});
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +23,10 @@ class ValueTile extends StatelessWidget {
         SizedBox(
           height: 5,
         ),
-        iconUrl != null
-            ? Image.network(
-                iconUrl!,
-                width: 20,
+        weatherName != null
+            ? Icon(
+                WeatherIcon.fromName(weatherName!),
+                size: 20,
               )
             : SizedBox(),
         SizedBox(

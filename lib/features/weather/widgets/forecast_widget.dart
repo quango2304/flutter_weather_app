@@ -11,7 +11,7 @@ class ForecastHorizontal extends StatelessWidget {
     required this.forecastDay,
   }) : super(key: key);
 
-  final List<ForecastDay> forecastDay;
+  final List<Forecast> forecastDay;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class ForecastHorizontal extends StatelessWidget {
                 child: ValueTile(
                   '${item.day.condition.text}',
                   '${item.day.avgTempC.round()}°',
-                  iconUrl: item.day.condition.icon,
+                  weatherName: item.day.condition.text,
                 )),
           );
         },

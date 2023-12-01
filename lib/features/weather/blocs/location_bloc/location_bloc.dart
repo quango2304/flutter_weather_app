@@ -23,9 +23,13 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   void _onSearchLocation(SearchLocationEvent event, Emitter emitter) async {
     try {
-      final List<CityModel> cities = await repo.searchCities(event.keyword);
-      emitter(LocationSearching(cities));
-    } catch (e,s ) {
+      if(event.keyword.isEmpty) {
+        emitter(LocationInitial());
+      } else {
+        final List<CityModel> cities = await repo.searchCities(event.keyword);
+        emitter(LocationSearching(cities));
+      }
+    } catch (e, s) {
       log('_onSearchLocation $e $s');
       emitter(const LocationSearchingFailed(
           'Unexpected error happened, please try again.'));

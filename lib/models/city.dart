@@ -18,7 +18,7 @@ class CityModel extends Equatable {
   factory CityModel.fromJson(Map<String, dynamic> json) {
     return CityModel(
         name: json['name'] ?? '',
-        lat:json['lat'] ?? 0.0,
+        lat: json['lat'] ?? 0.0,
         lon: json['lon'] ?? 0.0,
         country: json['country'] ?? '',
         region: json['region'] ?? '');

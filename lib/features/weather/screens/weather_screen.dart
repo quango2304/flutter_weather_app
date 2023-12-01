@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:weather_app/core/svg_path.dart';
 import 'package:weather_app/features/weather/blocs/location_bloc/location_bloc.dart';
 import 'package:weather_app/features/weather/blocs/weather_cubit/weather_cubit.dart';
 import 'package:weather_app/features/weather/widgets/weather_widget.dart';
 import 'package:weather_app/models/city.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage._({super.key});
+class WeatherScreen extends StatefulWidget {
+  const WeatherScreen._({super.key});
 
   static Widget newInstance({Key? key}) {
     return MultiBlocProvider(
@@ -19,18 +21,19 @@ class MyHomePage extends StatefulWidget {
           create: (context) => WeatherCubit(),
         ),
       ],
-      child: MyHomePage._(key: key),
+      child: WeatherScreen._(key: key),
     );
   }
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<WeatherScreen> createState() => _WeatherScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _WeatherScreenState extends State<WeatherScreen> {
   final searchTextController = TextEditingController();
 
   LocationBloc get locationBloc => context.read<LocationBloc>();
+
   WeatherCubit get weatherCubit => context.read<WeatherCubit>();
 
   void onSelectLocation(CityModel city) {}
@@ -51,21 +54,32 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget buildLocationList(LocationSearching state) {
     final cities = state.cities;
     if (cities.isEmpty) {
-      return Text('Not found any city with the name');
+      return SvgPicture.asset(SvgPath.noData.path);
     }
-    return ListView.builder(
+    return ListView.separated(
+      padding: EdgeInsets.zero,
       itemBuilder: (_, index) {
         final city = cities[index];
-        return CupertinoListTile(
-          title: Text(city.name),
-          subtitle: Text('${city.country} ${city.region}'),
-          onTap: () {
-            searchTextController.clear();
-            weatherCubit.getWeatherForLocation(cityName: city.name);
-            locationBloc.add(const SearchLocationCompleteEvent());
-          },
+        return Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          clipBehavior: Clip.hardEdge,
+          child: CupertinoListTile(
+            title: Text(city.name),
+            subtitle: city.region.isNotEmpty ? Text(city.region) : null,
+            additionalInfo: Text(city.country),
+            onTap: () {
+              searchTextController.clear();
+              weatherCubit.getWeatherForLocation(cityName: city.name);
+              locationBloc.add(const SearchLocationCompleteEvent());
+            },
+            backgroundColor: Colors.grey.withOpacity(0.1),
+          ),
         );
       },
+      separatorBuilder: (_, index) => const SizedBox(
+        height: 16,
+      ),
       itemCount: cities.length,
     );
   }
@@ -79,7 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
           return CupertinoActivityIndicator();
         case WeatherFetchSuccessful():
           final weather = state.weather;
-          return WeatherWidget(weather: weather,);
+          return WeatherWidget(
+            weather: weather,
+          );
         case WeatherFetchFailed():
           return Text(state.message);
       }
@@ -92,23 +108,45 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            TextField(
-              onChanged: (keyword) {
-                if(keyword.isEmpty) {
-                  locationBloc.add(const SearchLocationCompleteEvent());
-                } else {
-                  locationBloc.add(SearchLocationEvent(keyword));
-                }
-              },
-              controller: searchTextController,
-            ),
-            Expanded(child: buildBody())
-          ],
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Column(
+        children: [
+          SafeArea(
+            bottom: false,
+            child: buildSearchField(),
+          ),
+          Expanded(child: buildBody()),
+        ],
+      ),
+    );
+  }
+
+  Widget buildSearchField() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      child: TextField(
+        onChanged: (keyword) {
+          locationBloc.add(SearchLocationEvent(keyword));
+        },
+        decoration: InputDecoration(
+          hintText: 'Search the location',
+          suffixIcon: const Icon(
+            Icons.search,
+            color: Colors.grey,
+          ),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.withOpacity(0.3)),
+            borderRadius: BorderRadius.circular(20),
+          ),
         ),
+        controller: searchTextController,
       ),
     );
   }

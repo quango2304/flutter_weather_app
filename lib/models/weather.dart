@@ -1,34 +1,44 @@
-class Weather {
-  Location location;
-  Current current;
-  Forecast forecast;
+import 'package:equatable/equatable.dart';
 
-  Weather({
+class Weather extends Equatable {
+  final Location location;
+  final Current current;
+  final List<Forecast> forecasts;
+
+  const Weather({
     required this.location,
     required this.current,
-    required this.forecast,
+    required this.forecasts,
   });
 
   factory Weather.fromJson(Map<String, dynamic> json) {
+    List<Forecast> forecastDayList = List<Forecast>.from(
+      json['forecast']['forecastday']
+          .map((forecastDay) => Forecast.fromJson(forecastDay)),
+    );
+
     return Weather(
       location: Location.fromJson(json['location']),
       current: Current.fromJson(json['current']),
-      forecast: Forecast.fromJson(json['forecast']),
+      forecasts: forecastDayList,
     );
   }
+
+  @override
+  List<Object?> get props => [location, current, forecasts];
 }
 
-class Location {
-  String name;
-  String region;
-  String country;
-  double lat;
-  double lon;
-  String tzId;
-  int localtimeEpoch;
-  String localtime;
+class Location extends Equatable {
+  final String name;
+  final String region;
+  final String country;
+  final double lat;
+  final double lon;
+  final String tzId;
+  final int localtimeEpoch;
+  final String localtime;
 
-  Location({
+  const Location({
     required this.name,
     required this.region,
     required this.country,
@@ -51,34 +61,38 @@ class Location {
       localtime: json['localtime'],
     );
   }
+
+  @override
+  List<Object?> get props =>
+      [name, region, country, lat, lon, tzId, localtimeEpoch, localtime];
 }
 
-class Current {
-  int lastUpdatedEpoch;
-  String lastUpdated;
-  double tempC;
-  double tempF;
-  int isDay;
-  Condition condition;
-  double windMph;
-  double windKph;
-  int windDegree;
-  String windDir;
-  double pressureMb;
-  double pressureIn;
-  double precipMm;
-  double precipIn;
-  int humidity;
-  int cloud;
-  double feelslikeC;
-  double feelslikeF;
-  double visKm;
-  double visMiles;
-  double uv;
-  double gustMph;
-  double gustKph;
+class Current extends Equatable {
+  final int lastUpdatedEpoch;
+  final String lastUpdated;
+  final double tempC;
+  final double tempF;
+  final int isDay;
+  final WeatherCondition condition;
+  final double windMph;
+  final double windKph;
+  final int windDegree;
+  final String windDir;
+  final double pressureMb;
+  final double pressureIn;
+  final double precipMm;
+  final double precipIn;
+  final int humidity;
+  final int cloud;
+  final double feelslikeC;
+  final double feelslikeF;
+  final double visKm;
+  final double visMiles;
+  final double uv;
+  final double gustMph;
+  final double gustKph;
 
-  Current({
+  const Current({
     required this.lastUpdatedEpoch,
     required this.lastUpdated,
     required this.tempC,
@@ -111,7 +125,7 @@ class Current {
       tempC: json['temp_c'].toDouble(),
       tempF: json['temp_f'].toDouble(),
       isDay: json['is_day'],
-      condition: Condition.fromJson(json['condition']),
+      condition: WeatherCondition.fromJson(json['condition']),
       windMph: json['wind_mph'].toDouble(),
       windKph: json['wind_kph'].toDouble(),
       windDegree: json['wind_degree'],
@@ -131,77 +145,95 @@ class Current {
       gustKph: json['gust_kph'].toDouble(),
     );
   }
+
+  @override
+  List<Object?> get props => [
+        lastUpdatedEpoch,
+        lastUpdated,
+        tempC,
+        tempF,
+        isDay,
+        condition,
+        windMph,
+        windKph,
+        windDegree,
+        windDir,
+        pressureMb,
+        pressureIn,
+        precipMm,
+        precipIn,
+        humidity,
+        cloud,
+        feelslikeC,
+        feelslikeF,
+        visKm,
+        visMiles,
+        uv,
+        gustMph,
+        gustKph,
+      ];
 }
 
-class Condition {
-  String text;
-  String icon;
-  int code;
+class WeatherCondition extends Equatable {
+  final String text;
+  final String icon;
+  final int code;
 
-  Condition({
+  const WeatherCondition({
     required this.text,
     required this.icon,
     required this.code,
   });
 
-  factory Condition.fromJson(Map<String, dynamic> json) {
+  factory WeatherCondition.fromJson(Map<String, dynamic> json) {
     final icon = 'http:${json['icon']}';
-    return Condition(
+    return WeatherCondition(
       text: json['text'],
       icon: icon,
       code: json['code'],
     );
   }
-}
-class Forecast {
-  List<ForecastDay> forecastDay;
 
-  Forecast({
-    required this.forecastDay,
-  });
-
-  factory Forecast.fromJson(Map<String, dynamic> json) {
-    List<ForecastDay> forecastDayList = List<ForecastDay>.from(
-      json['forecastday'].map((forecastDay) => ForecastDay.fromJson(forecastDay)),
-    );
-
-    return Forecast(forecastDay: forecastDayList);
-  }
+  @override
+  List<Object?> get props => [text, icon, code];
 }
 
-class ForecastDay {
-  String date;
-  int dateEpoch;
-  Day day;
-  Astro astro;
-  ForecastDay({
+class Forecast extends Equatable {
+  final String date;
+  final int dateEpoch;
+  final Day day;
+  final Astro astro;
+
+  const Forecast({
     required this.date,
     required this.dateEpoch,
     required this.day,
     required this.astro,
   });
 
-  factory ForecastDay.fromJson(Map<String, dynamic> json) {
-    return ForecastDay(
-      date: json['date'],
-      dateEpoch: json['date_epoch'],
-      day: Day.fromJson(json['day']),
-      astro: Astro.fromJson(json['astro'])
-    );
+  factory Forecast.fromJson(Map<String, dynamic> json) {
+    return Forecast(
+        date: json['date'],
+        dateEpoch: json['date_epoch'],
+        day: Day.fromJson(json['day']),
+        astro: Astro.fromJson(json['astro']));
   }
+
+  @override
+  List<Object?> get props => [date, dateEpoch, day, astro];
 }
 
-class Astro {
-  String sunrise;
-  String sunset;
-  String moonrise;
-  String moonset;
-  String moonPhase;
-  int moonIllumination;
-  int isMoonUp;
-  int isSunUp;
+class Astro extends Equatable {
+  final String sunrise;
+  final String sunset;
+  final String moonrise;
+  final String moonset;
+  final String moonPhase;
+  final int moonIllumination;
+  final int isMoonUp;
+  final int isSunUp;
 
-  Astro({
+  const Astro({
     required this.sunrise,
     required this.sunset,
     required this.moonrise,
@@ -224,31 +256,43 @@ class Astro {
       isSunUp: json['is_sun_up'],
     );
   }
+
+  @override
+  List<Object?> get props => [
+        sunrise,
+        sunset,
+        moonrise,
+        moonset,
+        moonPhase,
+        moonIllumination,
+        isMoonUp,
+        isSunUp,
+      ];
 }
 
-class Day {
-  double maxTempC;
-  double maxTempF;
-  double minTempC;
-  double minTempF;
-  double avgTempC;
-  double avgTempF;
-  double maxWindMph;
-  double maxWindKph;
-  double totalPrecipMm;
-  double totalPrecipIn;
-  double totalSnowCm;
-  double avgVisKm;
-  double avgVisMiles;
-  double avgHumidity;
-  int dailyWillItRain;
-  int dailyChanceOfRain;
-  int dailyWillItSnow;
-  int dailyChanceOfSnow;
-  Condition condition;
-  double uv;
+class Day extends Equatable {
+  final double maxTempC;
+  final double maxTempF;
+  final double minTempC;
+  final double minTempF;
+  final double avgTempC;
+  final double avgTempF;
+  final double maxWindMph;
+  final double maxWindKph;
+  final double totalPrecipMm;
+  final double totalPrecipIn;
+  final double totalSnowCm;
+  final double avgVisKm;
+  final double avgVisMiles;
+  final double avgHumidity;
+  final int dailyWillItRain;
+  final int dailyChanceOfRain;
+  final int dailyWillItSnow;
+  final int dailyChanceOfSnow;
+  final WeatherCondition condition;
+  final double uv;
 
-  Day({
+  const Day({
     required this.maxTempC,
     required this.maxTempF,
     required this.minTempC,
@@ -291,8 +335,32 @@ class Day {
       dailyChanceOfRain: json['daily_chance_of_rain'],
       dailyWillItSnow: json['daily_will_it_snow'],
       dailyChanceOfSnow: json['daily_chance_of_snow'],
-      condition: Condition.fromJson(json['condition']),
+      condition: WeatherCondition.fromJson(json['condition']),
       uv: json['uv'],
     );
   }
+
+  @override
+  List<Object?> get props => [
+        maxTempC,
+        maxTempF,
+        minTempC,
+        minTempF,
+        avgTempC,
+        avgTempF,
+        maxWindMph,
+        maxWindKph,
+        totalPrecipMm,
+        totalPrecipIn,
+        totalSnowCm,
+        avgVisKm,
+        avgVisMiles,
+        avgHumidity,
+        dailyWillItRain,
+        dailyChanceOfRain,
+        dailyWillItSnow,
+        dailyChanceOfSnow,
+        condition,
+        uv,
+      ];
 }
