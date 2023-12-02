@@ -1,38 +1,38 @@
 import 'package:weather_app/core/asset_path.dart';
 
-String getWeatherLotties(String weatherCondition, bool isDay) {
+String getWeatherLottie(String weatherCondition, bool isDay) {
   final lowerCase = weatherCondition.toLowerCase();
   if(isDay) {
     if (lowerCase.contains('cloud')) {
-      return AssetPath.dayCloudyLotties.path;
+      return AssetPath.dayCloudyLottie.path;
     } else if (lowerCase.contains('rain')) {
-      return AssetPath.dayRainLotties.path;
+      return AssetPath.dayRainLottie.path;
     } else if (lowerCase.contains('sun')) {
-      return AssetPath.daySunnyLotties.path;
+      return AssetPath.daySunnyLottie.path;
     } else if (lowerCase.contains('mist') || lowerCase.contains('fog')) {
-      return AssetPath.dayFogLotties.path;
+      return AssetPath.dayFogLottie.path;
     } else if (lowerCase.contains('thunder')) {
-      return AssetPath.thunderRainLotties.path;
+      return AssetPath.thunderRainLottie.path;
     } else if (lowerCase.contains('free') || lowerCase.contains('ice')) {
-      return AssetPath.dayIceLotties.path;
+      return AssetPath.dayIceLottie.path;
     } else {
-      return AssetPath.dayCloudyLotties.path;
+      return AssetPath.dayCloudyLottie.path;
     }
   } else {
     if (lowerCase.contains('cloud')) {
-      return AssetPath.nightCloudyLotties.path;
+      return AssetPath.nightCloudyLottie.path;
     } else if (lowerCase.contains('rain')) {
-      return AssetPath.nightRainLotties.path;
+      return AssetPath.nightRainLottie.path;
     } else if (lowerCase.contains('clear')) {
-      return AssetPath.nightClearLotties.path;
+      return AssetPath.nightClearLottie.path;
     } else if (lowerCase.contains('mist') || lowerCase.contains('fog')) {
-      return AssetPath.nightFogLotties.path;
+      return AssetPath.nightFogLottie.path;
     } else if (lowerCase.contains('thunder')) {
-      return AssetPath.thunderRainLotties.path;
+      return AssetPath.thunderRainLottie.path;
     } else if (lowerCase.contains('free') || lowerCase.contains('ice')) {
-      return AssetPath.nightIceLotties.path;
+      return AssetPath.nightIceLottie.path;
     } else {
-      return AssetPath.nightCloudyLotties.path;
+      return AssetPath.nightCloudyLottie.path;
     }
   }
 }

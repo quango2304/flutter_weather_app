@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:weather_app/core/asset_path.dart';
 import 'package:weather_app/features/weather/blocs/location_bloc/location_bloc.dart';
 import 'package:weather_app/features/weather/blocs/weather_cubit/weather_cubit.dart';
@@ -68,60 +69,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
     });
   }
 
-  Widget buildLocationList(LocationSearching state) {
-    final cities = state.cities;
-    if (cities.isEmpty) {
-      return SvgPicture.asset(AssetPath.noDataSvg.path);
-    }
-    return ListView.separated(
-      padding: EdgeInsets.zero,
-      itemBuilder: (_, index) {
-        final city = cities[index];
-        return Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          clipBehavior: Clip.hardEdge,
-          child: CupertinoListTile(
-            title: Text(
-              city.name,
-              style: TextStyle(
-                  color: isDay ? Colors.black : Colors.white,
-                  fontWeight: FontWeight.w600),
-            ),
-            padding: const EdgeInsets.all(20),
-            subtitle: city.region.isNotEmpty
-                ? Text(
-                    city.region,
-                    style: TextStyle(
-                        color: isDay
-                            ? Colors.black.withOpacity(0.5)
-                            : Colors.white.withOpacity(0.5)),
-                  )
-                : null,
-            additionalInfo: Text(
-              city.country,
-              style: TextStyle(
-                  color: isDay
-                      ? Colors.black.withOpacity(0.5)
-                      : Colors.white.withOpacity(0.5)),
-            ),
-            onTap: () {
-              searchTextController.clear();
-              weatherCubit.getWeatherForLocation(cityName: city.name);
-              locationBloc.add(const SearchLocationCompleteEvent());
-            },
-            backgroundColor:
-                isDay ? const Color(0xffC2E0FF) : const Color(0xff131830),
-          ),
-        );
-      },
-      separatorBuilder: (_, index) => const SizedBox(
-        height: 16,
-      ),
-      itemCount: cities.length,
-    );
-  }
-
   Widget buildWeatherData() {
     return BlocConsumer<WeatherCubit, WeatherState>(
       builder: (_, state) {
@@ -136,7 +83,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               weather: weather,
             );
           case WeatherFetchFailed():
-            return Text(state.message);
+            return Lottie.asset(AssetPath.errorLottie.path);
         }
       },
       listener: (BuildContext context, WeatherState state) {
@@ -152,7 +99,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   }
 
   Widget buildSearchFailed(LocationSearchingFailed state) {
-    return Text(state.message);
+    return Lottie.asset(AssetPath.errorLottie.path);
   }
 
   @override
@@ -181,17 +128,20 @@ class _WeatherScreenState extends State<WeatherScreen> {
         onChanged: (keyword) {
           locationBloc.add(SearchLocationEvent(keyword));
         },
-        style: TextStyle(color: isDay ? Colors.black : Colors.white),
+        style: GoogleFonts.sono(
+            color: isDay
+                ? const Color(0xff3A385E).withOpacity(0.8)
+                : Colors.white),
         decoration: InputDecoration(
             hintText: 'Search the location',
-            hintStyle: TextStyle(
+            hintStyle: GoogleFonts.sono(
                 color: isDay
-                    ? Colors.black.withOpacity(0.5)
+                    ? const Color(0xff3A385E).withOpacity(0.5)
                     : Colors.white.withOpacity(0.5)),
             suffixIcon: Icon(
               Icons.search,
               color: isDay
-                  ? Colors.black.withOpacity(0.5)
+                  ? const Color(0xff3A385E).withOpacity(0.5)
                   : Colors.white.withOpacity(0.5),
             ),
             contentPadding:

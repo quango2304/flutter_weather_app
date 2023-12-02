@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app/core/configs/env_config.dart';
 import 'package:weather_app/core/configs/injectable_config.dart';

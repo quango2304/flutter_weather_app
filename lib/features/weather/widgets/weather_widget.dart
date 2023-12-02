@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weather_app/core/utils.dart';
@@ -46,7 +47,7 @@ class WeatherWidget extends StatelessWidget {
           constraints: const BoxConstraints(minHeight: 100),
           child: Text(
             Utils.makeNewLineEveryWord(weather.current.condition.text),
-            style: TextStyle(
+            style: GoogleFonts.sono(
                 color: textColor(),
                 fontSize: 30,
                 height: 1.1,
@@ -58,7 +59,7 @@ class WeatherWidget extends StatelessWidget {
           DateFormat('HH:mm').format(
             date,
           ),
-          style: TextStyle(
+          style: GoogleFonts.sono(
               color: textColor(),
               fontSize: 30,
               height: 1.1,
@@ -73,7 +74,7 @@ class WeatherWidget extends StatelessWidget {
       child: Container(
         alignment: Alignment.topCenter,
         child: Lottie.asset(
-            getWeatherLotties(
+            getWeatherLottie(
                 weather.current.condition.text, weather.current.isDay == 1),
             fit: BoxFit.fitWidth,
             width: screenWidth * 0.9),
@@ -88,20 +89,23 @@ class WeatherWidget extends StatelessWidget {
         children: [
           Text(
             '${weather.location.name}\n${weather.location.country}',
-            style: TextStyle(
-                color: textColor(), fontSize: 18, fontWeight: FontWeight.w500),
+            style: GoogleFonts.sono(
+              color: textColor(),
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           Text(
             '${weather.current.tempC.round()}°',
-            style: TextStyle(
-                fontSize: 100,
+            style: GoogleFonts.sono(
+                fontSize: 70,
                 fontWeight: FontWeight.w300,
                 height: 1.1,
                 color: textColor()),
           ),
           Text(
             'feels like ${weather.current.feelslikeC.round()}°',
-            style: TextStyle(
+            style: GoogleFonts.sono(
                 fontSize: 14,
                 fontWeight: FontWeight.w300,
                 height: 1.1,
@@ -133,7 +137,7 @@ class WeatherWidget extends StatelessWidget {
                   children: [
                     Text(
                       DateFormat('hh:mm').format(DateTime.parse(forecast.time)),
-                      style: TextStyle(
+                      style: GoogleFonts.sono(
                           color: textColor(),
                           fontSize: 18,
                           fontWeight: FontWeight.w500),
@@ -142,7 +146,7 @@ class WeatherWidget extends StatelessWidget {
                       height: 4,
                     ),
                     Lottie.asset(
-                        getWeatherLotties(
+                        getWeatherLottie(
                             forecast.condition.text, forecast.isDay == 1),
                         width: 50,
                         fit: BoxFit.fitWidth),
@@ -151,7 +155,7 @@ class WeatherWidget extends StatelessWidget {
                     ),
                     Text(
                       '${forecast.tempC.round()}°',
-                      style: TextStyle(
+                      style: GoogleFonts.sono(
                           color: textColor(),
                           fontSize: 20,
                           fontWeight: FontWeight.w500),
@@ -163,6 +167,7 @@ class WeatherWidget extends StatelessWidget {
     ));
   }
 
-  Color textColor() =>
-      weather.current.isDay == 1 ? const Color(0xff131B37) : Colors.white;
+  Color textColor() => weather.current.isDay == 1
+      ? const Color(0xff3A385E).withOpacity(0.8)
+      : Colors.white;
 }

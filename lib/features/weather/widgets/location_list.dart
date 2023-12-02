@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:weather_app/core/asset_path.dart';
 import 'package:weather_app/models/city.dart';
 
@@ -18,7 +19,7 @@ class LocationListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (locations.isEmpty) {
-      return SvgPicture.asset(AssetPath.noDataSvg.path);
+      return Lottie.asset(AssetPath.noDataLottie.path);
     }
     return ListView.separated(
       padding: EdgeInsets.zero,
@@ -31,32 +32,35 @@ class LocationListWidget extends StatelessWidget {
           child: CupertinoListTile(
             title: Text(
               city.name,
-              style: TextStyle(
-                  color: isDay ? Colors.black : Colors.white,
+              style: GoogleFonts.sono(
+                  color: isDay
+                      ? const Color(0xff3A385E).withOpacity(0.8)
+                      : Colors.white,
                   fontWeight: FontWeight.w600),
             ),
             padding: const EdgeInsets.all(20),
             subtitle: city.region.isNotEmpty
                 ? Text(
                     city.region,
-                    style: TextStyle(
+                    style: GoogleFonts.sono(
                         color: isDay
-                            ? Colors.black.withOpacity(0.5)
+                            ? const Color(0xff3A385E).withOpacity(0.5)
                             : Colors.white.withOpacity(0.5)),
                   )
                 : null,
             additionalInfo: Text(
               city.country,
-              style: TextStyle(
+              style: GoogleFonts.sono(
                   color: isDay
-                      ? Colors.black.withOpacity(0.5)
+                      ? const Color(0xff3A385E).withOpacity(0.5)
                       : Colors.white.withOpacity(0.5)),
             ),
             onTap: () {
               onSelectLocation(city);
             },
-            backgroundColor:
-                isDay ? const Color(0xffC2E0FF) : const Color(0xff131830),
+            backgroundColor: isDay
+                ? const Color(0xffC2E0FF)
+                : const Color(0xff131830).withOpacity(0.5),
           ),
         );
       },

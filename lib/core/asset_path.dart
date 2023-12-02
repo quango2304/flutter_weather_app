@@ -1,17 +1,17 @@
 enum AssetPath {
-  noDataSvg('assets/svgs/no-data.svg'),
-  nightRainLotties('assets/lotties/night-rain.json'),
-  dayRainLotties('assets/lotties/day-rain.json'),
-  nightClearLotties('assets/lotties/clear-night.json'),
-  dayCloudyLotties('assets/lotties/cloudy-day.json'),
-  nightCloudyLotties('assets/lotties/cloudy-night.json'),
-  dayFogLotties('assets/lotties/day-fog.json'),
-  dayIceLotties('assets/lotties/day-ice.json'),
-  nightFogLotties('assets/lotties/night-fog.json'),
-  nightIceLotties('assets/lotties/night-ice.json'),
-  daySunnyLotties('assets/lotties/sunny-day.json'),
-  thunderRainLotties('assets/lotties/thunder-rain.json'),
-
+  noDataLottie('assets/lotties/no-data.json'),
+  errorLottie('assets/lotties/error.json'),
+  nightRainLottie('assets/lotties/night-rain.json'),
+  dayRainLottie('assets/lotties/day-rain.json'),
+  nightClearLottie('assets/lotties/clear-night.json'),
+  dayCloudyLottie('assets/lotties/cloudy-day.json'),
+  nightCloudyLottie('assets/lotties/cloudy-night.json'),
+  dayFogLottie('assets/lotties/day-fog.json'),
+  dayIceLottie('assets/lotties/day-ice.json'),
+  nightFogLottie('assets/lotties/night-fog.json'),
+  nightIceLottie('assets/lotties/night-ice.json'),
+  daySunnyLottie('assets/lotties/sunny-day.json'),
+  thunderRainLottie('assets/lotties/thunder-rain.json'),
   ;
 
   const AssetPath(this.path);
