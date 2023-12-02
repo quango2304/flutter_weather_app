@@ -203,20 +203,28 @@ class Forecast extends Equatable {
   final int dateEpoch;
   final Day day;
   final Astro astro;
+  final List<HourForeCast> hoursForecast;
 
   const Forecast({
     required this.date,
     required this.dateEpoch,
     required this.day,
     required this.astro,
+    required this.hoursForecast,
   });
 
   factory Forecast.fromJson(Map<String, dynamic> json) {
+    List<HourForeCast> forecastHourList = List<HourForeCast>.from(
+      json['hour']
+          .map((forecastHour) => HourForeCast.fromJson(forecastHour)),
+    );
     return Forecast(
-        date: json['date'],
-        dateEpoch: json['date_epoch'],
-        day: Day.fromJson(json['day']),
-        astro: Astro.fromJson(json['astro']));
+      date: json['date'],
+      dateEpoch: json['date_epoch'],
+      day: Day.fromJson(json['day']),
+      astro: Astro.fromJson(json['astro']),
+      hoursForecast: forecastHourList,
+    );
   }
 
   @override
@@ -363,4 +371,33 @@ class Day extends Equatable {
         condition,
         uv,
       ];
+}
+
+class HourForeCast extends Equatable {
+  final int timeEpoch;
+  final String time;
+  final double tempC;
+  final int isDay;
+  final WeatherCondition condition;
+
+  const HourForeCast({
+    required this.timeEpoch,
+    required this.time,
+    required this.tempC,
+    required this.isDay,
+    required this.condition
+  });
+
+  factory HourForeCast.fromJson(Map<String, dynamic> json) {
+    return HourForeCast(
+      timeEpoch: json['time_epoch'],
+      time: json['time'],
+      tempC: json['temp_c'].toDouble(),
+      isDay: json['is_day'],
+      condition: WeatherCondition.fromJson(json['condition']),
+    );
+  }
+
+  @override
+  List<Object?> get props => [timeEpoch, time, tempC, isDay, condition];
 }

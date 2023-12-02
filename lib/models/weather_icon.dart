@@ -1,28 +1,38 @@
-import 'package:flutter/material.dart';
+import 'package:weather_app/core/asset_path.dart';
 
-class WeatherIcon extends IconData {
-  const WeatherIcon._(int codePoint)
-      : super(
-          codePoint,
-          fontFamily: 'WeatherIcons',
-        );
-
-  factory WeatherIcon.fromName(String name) {
-    if (name.contains('cloud')) {
-      return const WeatherIcon._(0xf041);
-    } else if (name.contains('rain')) {
-      return const WeatherIcon._(0xf019);
-    } else if (name.contains('sun')) {
-      return const WeatherIcon._(0xf00d);
-    } else if (name.contains('clear')) {
-      return const WeatherIcon._(0xf041);
-    } else if (name.contains('mist') || name.contains('fog')) {
-      return const WeatherIcon._(0xf014);
-    } else if (name.contains('thunder')) {
-      return const WeatherIcon._(0xf01e);
-    } else if (name.contains('free') || name.contains('ice')) {
-      return const WeatherIcon._(0xf038);
+String getWeatherLotties(String weatherCondition, bool isDay) {
+  final lowerCase = weatherCondition.toLowerCase();
+  if(isDay) {
+    if (lowerCase.contains('cloud')) {
+      return AssetPath.dayCloudyLotties.path;
+    } else if (lowerCase.contains('rain')) {
+      return AssetPath.dayRainLotties.path;
+    } else if (lowerCase.contains('sun')) {
+      return AssetPath.daySunnyLotties.path;
+    } else if (lowerCase.contains('mist') || lowerCase.contains('fog')) {
+      return AssetPath.dayFogLotties.path;
+    } else if (lowerCase.contains('thunder')) {
+      return AssetPath.thunderRainLotties.path;
+    } else if (lowerCase.contains('free') || lowerCase.contains('ice')) {
+      return AssetPath.dayIceLotties.path;
+    } else {
+      return AssetPath.dayCloudyLotties.path;
     }
-    return const WeatherIcon._(0xf041);
+  } else {
+    if (lowerCase.contains('cloud')) {
+      return AssetPath.nightCloudyLotties.path;
+    } else if (lowerCase.contains('rain')) {
+      return AssetPath.nightRainLotties.path;
+    } else if (lowerCase.contains('clear')) {
+      return AssetPath.nightClearLotties.path;
+    } else if (lowerCase.contains('mist') || lowerCase.contains('fog')) {
+      return AssetPath.nightFogLotties.path;
+    } else if (lowerCase.contains('thunder')) {
+      return AssetPath.thunderRainLotties.path;
+    } else if (lowerCase.contains('free') || lowerCase.contains('ice')) {
+      return AssetPath.nightIceLotties.path;
+    } else {
+      return AssetPath.nightCloudyLotties.path;
+    }
   }
 }

@@ -44,6 +44,8 @@ dependencies:
   injectable:
   get_it:
   flutter_svg:
+  lottie:
+  intl:
 
 dev_dependencies:
   flutter_test:
@@ -73,11 +75,7 @@ flutter:
   assets:
     - env/.env
     - assets/svgs/
-    - assets/fonts/
-  fonts:
-    - family: WeatherIcons
-      fonts:
-        - asset: assets/fonts/weathericons-regular-webfont.ttf
+    - assets/lotties/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
