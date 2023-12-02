@@ -1,10 +1,7 @@
 # Flutter Weather App
 
-![Demo Image 1](demo_images/1.png)
-![Demo Image 2](demo_images/2.png)
-![Demo Image 3](demo_images/3.png)
-![Demo Image 4](demo_images/4.png)
-![Demo Image 5](demo_images/5.png)
+![Demo Image 1](demo_images/1.png) ![Demo Image 2](demo_images/2.png) ![Demo Image 3](demo_images/3.png)
+![Demo Image 4](demo_images/4.png) ![Demo Image 5](demo_images/5.png)
 
 ## Overview
 
