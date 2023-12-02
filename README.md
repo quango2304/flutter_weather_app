@@ -24,13 +24,13 @@ To set up the project, follow these steps:
 1. Clone the repository to your local machine:
 
     ```bash
-    git clone https://github.com/your-username/flutter-weather-app.git
+    git clone https://github.com/quango2304/flutter_weather_app
     ```
 
 2. Navigate to the project directory:
 
     ```bash
-    cd flutter-weather-app
+    cd flutter_weather_app
     ```
 
 3. Run the setup command:
