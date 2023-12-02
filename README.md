@@ -1,7 +1,14 @@
 # Flutter Weather App
 
-![Demo Image 1](demo_images/1.png) ![Demo Image 2](demo_images/2.png) ![Demo Image 3](demo_images/3.png)
-![Demo Image 4](demo_images/4.png) ![Demo Image 5](demo_images/5.png)
+<p float="left">
+  <img src="demo_images/1.png" width="100" />
+  <img src="demo_images/2.png" width="100" /> 
+  <img src="demo_images/3.png" width="100" />
+</p>
+<p float="left">
+  <img src="demo_images/4.png" width="100" /> 
+  <img src="demo_images/5.png" width="100" />
+</p>
 
 ## Overview
 
