@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:weather_app/core/asset_path.dart';
+import 'package:weather_app/core/asset_paths.dart';
 import 'package:weather_app/models/city.dart';
 
 class LocationListWidget extends StatelessWidget {
@@ -19,7 +19,7 @@ class LocationListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (locations.isEmpty) {
-      return Lottie.asset(AssetPath.noDataLottie.path);
+      return Lottie.asset(AssetPaths.noDataLottie.path);
     }
     return ListView.separated(
       padding: EdgeInsets.zero,

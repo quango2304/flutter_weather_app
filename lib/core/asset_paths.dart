@@ -1,4 +1,4 @@
-enum AssetPath {
+enum AssetPaths {
   noDataLottie('assets/lotties/no-data.json'),
   errorLottie('assets/lotties/error.json'),
   nightRainLottie('assets/lotties/night-rain.json'),
@@ -14,7 +14,7 @@ enum AssetPath {
   thunderRainLottie('assets/lotties/thunder-rain.json'),
   ;
 
-  const AssetPath(this.path);
+  const AssetPaths(this.path);
 
   final String path;
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:weather_app/core/asset_path.dart';
+import 'package:weather_app/core/asset_paths.dart';
 import 'package:weather_app/features/weather/blocs/location_bloc/location_bloc.dart';
 import 'package:weather_app/features/weather/blocs/weather_cubit/weather_cubit.dart';
 import 'package:weather_app/features/weather/widgets/location_list.dart';
@@ -52,21 +52,37 @@ class _WeatherScreenState extends State<WeatherScreen> {
     locationBloc.add(const SearchLocationCompleteEvent());
   }
 
-  Widget buildBody() {
-    return BlocBuilder<LocationBloc, LocationState>(builder: (_, state) {
-      switch (state) {
-        case LocationInitial():
-          return buildWeatherData();
-        case LocationSearching():
-          return LocationListWidget(
-            isDay: isDay,
-            locations: state.cities,
-            onSelectLocation: onSelectLocation,
-          );
-        case LocationSearchingFailed():
-          return buildSearchFailed(state);
-      }
-    });
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      decoration: buildBackGroundDecoration(),
+      child: SafeArea(
+        child: Scaffold(
+          body: Column(
+            children: [
+              Expanded(child:
+                  BlocBuilder<LocationBloc, LocationState>(builder: (_, state) {
+                switch (state) {
+                  case LocationInitial():
+                    return buildWeatherData();
+                  case LocationSearching():
+                    return LocationListWidget(
+                      isDay: isDay,
+                      locations: state.cities,
+                      onSelectLocation: onSelectLocation,
+                    );
+                  case LocationSearchingFailed():
+                    return buildSearchFailed(state);
+                }
+              })),
+              buildSearchLocationTextField(),
+            ],
+          ),
+          backgroundColor: Colors.transparent,
+        ),
+      ),
+    );
   }
 
   Widget buildWeatherData() {
@@ -83,7 +99,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
               weather: weather,
             );
           case WeatherFetchFailed():
-            return Lottie.asset(AssetPath.errorLottie.path);
+            return Lottie.asset(AssetPaths.errorLottie.path);
         }
       },
       listener: (BuildContext context, WeatherState state) {
@@ -99,26 +115,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   }
 
   Widget buildSearchFailed(LocationSearchingFailed state) {
-    return Lottie.asset(AssetPath.errorLottie.path);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 500),
-      decoration: buildBackGroundDecoration(),
-      child: SafeArea(
-        child: Scaffold(
-          body: Column(
-            children: [
-              Expanded(child: buildBody()),
-              buildSearchLocationTextField(),
-            ],
-          ),
-          backgroundColor: Colors.transparent,
-        ),
-      ),
-    );
+    return Lottie.asset(AssetPaths.errorLottie.path);
   }
 
   Padding buildSearchLocationTextField() {
